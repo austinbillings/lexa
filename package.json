@@ -1,0 +1,15 @@
+{
+  "name": "lexa",
+  "version": "1.0.0",
+  "description": "World's simplest localization tooling. For ES6 AND CommonJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["i18n"],
+  "author": "Austin <ajb@hey.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "zaq": "^2.1.4"
+  }
+}
