@@ -2,7 +2,7 @@ const assert = require('assert');
 const zaq = require('zaq');
 const { createLexer, createDictionary, setPreferredLocale, getPreferredLocale } = require('./index');
 
-const dictionaryEntriesA = {
+const mostlyEnglish = {
     hello: 'Welcome to our site!',
     goodbye: {
         en: 'Peace out',
@@ -10,7 +10,7 @@ const dictionaryEntriesA = {
     }
 };
 
-const dictionaryEntriesB = {
+const mostlySpanish = {
     sup: {
         en: 'What\'s up dude?',
         es: '¿Que pasa, esé?'
@@ -20,8 +20,17 @@ const dictionaryEntriesB = {
     }
 };
 
-const testDictionary = createDictionary('en', dictionaryEntriesA, dictionaryEntriesB);
+const deepObject = {
+    first: {
+        second: {
+            third: {
+                fourth: '"Quatro", Cinco says.'
+            }
+        }
+    }
+};
 
+const testDictionary = createDictionary('en', mostlyEnglish, mostlySpanish, deepObject);
 const testLexer =  createLexer(testDictionary);
 
 assert.equal(getPreferredLocale(), 'en');
@@ -57,4 +66,7 @@ assert.equal(testLexer('woah'), '¡Ay carumba!');
 zaq.ok('Preferred-only top-level entry resolution: passed');;
 
 assert.equal(testLexer('FAKE_NONEXISTENT_ID'), null);
-zaq.ok('Unknown entry ID resolves to null: passed');;
+zaq.ok('Unknown entry ID resolves to null: passed');
+
+assert.equal(testLexer('first.second.third.fourth'), '"Quatro", Cinco says.');
+zaq.ok('Deep lookup ID resolution: passed');
