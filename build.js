@@ -6,7 +6,7 @@ const fileContents = fs.readFileSync(path.resolve(__dirname, 'lexa.js'), 'utf8')
 const exportsList = `{
     isDictionary,
     createDictionary,
-    createLexer,
+    createLex,
     setPreferredLocale,
     getPreferredLocale
 }`
