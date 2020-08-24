@@ -2,15 +2,15 @@ const assert = require('assert');
 const zaq = require('zaq');
 const { createLexer, createDictionary, setPreferredLocale, getPreferredLocale } = require('./index');
 
-const mostlyEnglish = {
+const mostlyEnglish = createDictionary('en', {
     hello: 'Welcome to our site!',
     goodbye: {
         en: 'Peace out',
         es: 'Hasta Luego'
     }
-};
+});
 
-const mostlySpanish = {
+const mostlySpanish = createDictionary('es', {
     sup: {
         en: 'What\'s up dude?',
         es: '¿Que pasa, esé?'
@@ -18,9 +18,9 @@ const mostlySpanish = {
     woah: {
         es: '¡Ay carumba!'
     }
-};
+});
 
-const deepObject = {
+const deepObject = createDictionary('en', {
     first: {
         second: {
             third: {
@@ -28,15 +28,14 @@ const deepObject = {
             }
         }
     }
-};
+});
 
-const functionalDict = {
+const functionalDict = createDictionary('en', {
     ounces: (v) => `${v}oz.`,
     greeting: (name) => `Hey there, ${name}!`
-}
+});
 
-const testDictionary = createDictionary(mostlyEnglish, mostlySpanish, deepObject, functionalDict);
-const testLexer =  createLexer('en',testDictionary);
+const testLexer = createLexer(mostlyEnglish, mostlySpanish, deepObject, functionalDict);
 
 assert.equal(getPreferredLocale(), 'en');
 zaq.ok('Default locale resolves to en: passed');
@@ -50,8 +49,11 @@ zaq.ok('Preferred top-level entry resolution: passed');
 assert.equal(testLexer('sup'), 'What\'s up dude?');
 zaq.ok('Default top-level entry from secondary dictionary resolution: passed');
 
-assert.equal(testLexer('woah'), undefined);
+assert.equal(testLexer('woah'), '¡Ay carumba!');
 zaq.ok('Preferred "not found" entry resolving to undefined: passed');
+
+assert.equal(testLexer('woah.es'), '¡Ay carumba!');
+zaq.ok('Specific locale subselected via lookup ID: passed');
 
 
 assert.doesNotThrow(() => setPreferredLocale('es'));
