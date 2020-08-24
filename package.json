@@ -1,12 +1,14 @@
 {
   "name": "lexa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "World's simplest localization tooling. For ES6 AND CommonJS.",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
   },
-  "keywords": ["i18n"],
+  "keywords": [
+    "i18n"
+  ],
   "author": "Austin <ajb@hey.com>",
   "license": "MIT",
   "devDependencies": {
