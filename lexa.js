@@ -54,13 +54,10 @@ function getDeep (object, path, pathSeparator = '.') {
 // Dictionaries
 function isDictionary (value) {
   return isObject(value)
-    && value._isDictionaryObject
-    && isNonEmptyString(value.defaultLanguage);
+    && value._isDictionaryObject;
 }
 
-function createDictionary (defaultLanguage, ...dictionaryValues) {
-  if (!isNonEmptyString(defaultLanguage))
-    throw new TypeError(`${defaultLanguage} is not a non-empty <String>.`);
+function createDictionary (...dictionaryValues) {
   if (!isObject(dictionaryValues) && !isArray(dictionaryValues))
     throw new TypeError(`${dictionaryValues} is not an <Object|Array>.`);
   if (isDictionary(dictionaryValues))
@@ -70,7 +67,7 @@ function createDictionary (defaultLanguage, ...dictionaryValues) {
   const flatSourceList = sourceList.map(item => isDictionary(item) ? item.entries : item);
   const entries = mergeDeep(...flatSourceList);
 
-  return { entries, defaultLanguage, _isDictionaryObject: true };
+  return { entries, _isDictionaryObject: true };
 }
 
 const _preferredLocale = { current: 'en' };
@@ -83,15 +80,15 @@ function setPreferredLocale (newValue) {
   return _preferredLocale.current = newValue;
 }
 
-function createLexer (dictionary) {
-  if (!isDictionary(dictionary))
-    throw new TypeError(`${dictionary} is not a dictionary-like <Object> (use createDictionary()).`);
+function createLexer (defaultLanguage, ...dictionaries) {
+  if (!isNonEmptyString(defaultLanguage))
+    throw new TypeError(`${defaultLanguage} is not a non-empty <String>.`);
+  if (!dictionaries.every(isDictionary))
+    throw new TypeError(`Given a non dictionary-like <Object> (use createDictionary()): ${dictionaries.find(d => !isDictionary(d))}`);
 
-  const { defaultLanguage } = dictionary;
+  const dictionary = mergeDeep(...dictionaries);
 
-  return function lookupText (lookupId) {
-    const languageCode = getPreferredLocale();
-
+  const lookupText = (lookupId) => {
     if (!isNonEmptyString(lookupId))
       throw new TypeError(`${lookupId} is not a non-empty <String>.`);
 
@@ -99,15 +96,20 @@ function createLexer (dictionary) {
     const outputValue = getDeep(dictionary.entries, cleanLookupId);
 
     if (!isString(outputValue) && !isFunction(outputValue) && !isObject(outputValue)) {
-      return null;
+      // console.warn(`«${lookupId}» ${outputValue} is not a valid output value`);
+      return undefined;
     }
+
+    const preferredLocale = getPreferredLocale();
 
     return (isString(outputValue) || isFunction(outputValue))
       ? outputValue
-      : languageCode in outputValue
-        ? outputValue[languageCode]
+      : preferredLocale in outputValue
+        ? outputValue[preferredLocale]
         : outputValue[defaultLanguage]
   }
-}
 
-export { createLexer, createDictionary, setPreferredLocale, getPreferredLocale };
+  lookupText.dictionary = dictionary;
+
+  return lookupText;
+}

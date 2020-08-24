@@ -30,8 +30,13 @@ const deepObject = {
     }
 };
 
-const testDictionary = createDictionary('en', mostlyEnglish, mostlySpanish, deepObject);
-const testLexer =  createLexer(testDictionary);
+const functionalDict = {
+    ounces: (v) => `${v}oz.`,
+    greeting: (name) => `Hey there, ${name}!`
+}
+
+const testDictionary = createDictionary(mostlyEnglish, mostlySpanish, deepObject, functionalDict);
+const testLexer =  createLexer('en',testDictionary);
 
 assert.equal(getPreferredLocale(), 'en');
 zaq.ok('Default locale resolves to en: passed');
@@ -70,3 +75,6 @@ zaq.ok('Unknown entry ID resolves to null: passed');
 
 assert.equal(testLexer('first.second.third.fourth'), '"Quatro", Cinco says.');
 zaq.ok('Deep lookup ID resolution: passed');
+
+assert.equal(testLexer('ounces')(13), '13oz.');
+zaq.ok('Functional property resolution: passed');

@@ -1,2 +1,2 @@
 // index.js
-module.exports = require('./commonjs');
+module.exports = require('./lib/commonjs');

@@ -2,12 +2,18 @@
   "name": "lexa",
   "version": "1.0.1",
   "description": "World's simplest localization tooling. For ES6 AND CommonJS.",
-  "main": "index.js",
+  "main": "commonjs.js",
   "scripts": {
-    "test": "node test.js"
+    "build": "node build.js",
+    "test": "npm run build; node test.js",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/austinbillings/lexa.git"
   },
   "keywords": [
-    "i18n"
+    "i18n", "localization", "translation", "language", "strings"
   ],
   "author": "Austin <ajb@hey.com>",
   "license": "MIT",
