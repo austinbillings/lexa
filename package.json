@@ -1,6 +1,6 @@
 {
   "name": "lexa",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "World's simplest localization tooling. For ES6 AND CommonJS.",
   "main": "commonjs.js",
   "scripts": {
