@@ -5,7 +5,7 @@
   "main": "commonjs.js",
   "scripts": {
     "build": "node build.js",
-    "test": "npm run build; node test.js",
+    "test": "npm run build; mocha",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -22,6 +22,7 @@
   "author": "Austin <ajb@hey.com>",
   "license": "MIT",
   "devDependencies": {
+    "mocha": "^8.1.1",
     "zaq": "^2.1.4"
   }
 }
