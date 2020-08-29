@@ -1,7 +1,7 @@
 // build.js
 const fs = require('fs')
 const path = require('path')
-const fileContents = fs.readFileSync(path.resolve(__dirname, 'lexa.js'), 'utf8')
+const fileContents = fs.readFileSync(path.resolve(__dirname, 'lexacon.js'), 'utf8')
 
 const exportsList = `{
     isDictionary,
