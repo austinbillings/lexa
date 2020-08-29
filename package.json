@@ -1,6 +1,6 @@
 {
   "name": "lexacon",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "World's simplest localization tooling. For ES6 AND CommonJS.",
   "main": "commonjs.js",
   "scripts": {
